@@ -11,29 +11,29 @@ function Sidebar() {
     <div className="sidebar">
       <div className="upper__container">
         <div className="brand">
-          <img src={Logo} alt="" />
+          <img src={Logo} alt="EMS" />
         </div>
         <div className="links">
           <ul>
             <li className="active">
               <IoStatsChartSharp />
-              <a href="#">Overview</a>
+              <a href="/dashboard">Overview</a>
             </li>
             <li>
               <SiDatacamp />
-              <a href="#">A&R Data</a>
+              <a href="#">Complaint</a>
             </li>
             <li>
               <Si1001Tracklists />
-              <a href="#">Challenges</a>
+              <a href="#">Approved Complaints</a>
             </li>
             <li>
               <HiMusicNote />
-              <a href="#">Songs</a>
+              <a href="#">Denied Complaints</a>
             </li>
             <li>
               <FiUsers />
-              <a href="#">Users</a>
+              <a href="/dashboard/users">Users</a>
             </li>
             <li>
               <FiSettings />
