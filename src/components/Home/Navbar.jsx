@@ -28,20 +28,20 @@ export default function Navbar() {
       <div className={`links ${isNavOpen ? "show" : ""}`}>
         <ul>
           <li>
-            <a href="home">Home</a>
+            <a href="/">Home</a>
           </li>
           <li>
-            <a href="maketplace">Marketplace</a>
+            <a href="maketplace">About</a>
           </li>
           <li>
-            <a href="sellers">Sellers</a>
+            <a href="sellers">Contact</a>
           </li>
           <li>
             <a href="create">Create</a>
           </li>
         </ul>
       </div>
-      <Button dark text="Contact" />
+      <Button  dark text="Contact" />
     </Nav>
   );
 }

@@ -1,9 +1,9 @@
 import React from "react";
 import styled from "styled-components";
-export default function Button({ text, blue = false }) {
+export default function Button({ text, blue = false,onClick }) {
   return (
     <Div>
-      <button className={`${blue ? "blue" : "dark"}`}>{text}</button>
+      <button onClick={onClick}  className={`${blue ? "blue" : "dark"}`}>{text}</button>
     </Div>
   );
 }

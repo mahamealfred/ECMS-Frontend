@@ -1,8 +1,9 @@
 import  React, { useEffect, useState } from "react";
 import AreaTableAction from "./TableAction";
-import "./Table.scss";
-
-import Buttons from "../Home/Button";
+import "../Table.scss";
+import Navbar from "../../../components/Navbar";
+import { addNewCategory, fetchAllCategories } from "../../../apis/categoriesController";
+import Buttons from "../../Home/Button";
 import TextField from '@mui/material/TextField';
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
@@ -11,16 +12,13 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Button } from "@mui/material";
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
-import { fetchAllUsers } from "../../apis/userController";
-import Navbar from "../../components/Navbar";
 
 
 
 const TABLE_HEADS = [
-  "Fist Name",
-  "Last Name",
-  "Email",
-  "Role",
+  "Category Name",
+  "Number of Complaint",
+  "Date",
   "Action",
 ];
 
@@ -52,23 +50,24 @@ const CategoryTable = () => {
 
   //add new Category
   const handleNewCategory=async()=>{
+   
 if(!name){
   setSuccessMessage("Category Name is Required")
   setOpenSuccess(true)
 }else{
   try {
 
-    // const response=await addNewCategory(name)
-    // if(response.responseCode===201){
-    // //  setOpen(false)
-    //   setSuccessMessage(response.responseDescription)
-    //   fetchCategory()
-    //   setName("")
-    //  setOpenSuccess(true)
+    const response=await addNewCategory(name)
+    if(response.responseCode===201){
+    //  setOpen(false)
+      setSuccessMessage(response.responseDescription)
+      fetchCategory()
+      setName("")
+     setOpenSuccess(true)
       
-    // }else{
-    //   setSuccessMessage(response.responseDescription)
-    // }
+    }else{
+      setSuccessMessage(response.responseDescription)
+    }
     
   } catch (error) {
     console.log("error:",error)
@@ -81,7 +80,7 @@ if(!name){
   //Fecth Category
   const fetchCategory = async () => {
     try {
-      const response = await fetchAllUsers();
+      const response = await fetchAllCategories();
       if (response.responseCode === 200) {
         setCategoryData(response.data)
       }
@@ -110,10 +109,10 @@ if(!name){
         onClose={handleClose}
         
       >
-        <DialogTitle>User</DialogTitle>
+        <DialogTitle>Category</DialogTitle>
         <DialogContent>
           <DialogContentText>
-           
+            To Add new category you will need Category Name
           </DialogContentText>
           <TextField
             autoFocus
@@ -139,10 +138,10 @@ if(!name){
       <Navbar />
       <section className="content-area-table">
         <div className="data-table-info">
-          <h4 className="data-table-title">Users List</h4>
+          <h4 className="data-table-title">Complaint Category</h4>
         </div>
         <div className="data-table-info">
-        <Buttons onClick={handleClickOpen} blue text="New User"/>
+        <Buttons onClick={handleClickOpen} blue text="New Category"/>
         </div>
         <div className="data-table-diagram">
           <table>
@@ -157,10 +156,9 @@ if(!name){
               {categoryData?.map((dataItem) => {
                 return (
                   <tr key={dataItem.id}>
-                    <td>{dataItem.firstName}</td>
-                    <td>{dataItem.lastName}</td>
-                    <td>{dataItem?.email}</td>
-                    <td>{dataItem.role}</td>
+                    <td>{dataItem.name}</td>
+                    <td>{dataItem?.Complaints.length}</td>
+                    <td>{dataItem.createdAt}</td>
                     {/* <td>{dataItem.customer}</td> */}
                     {/* <td>
                       <div className="dt-status">

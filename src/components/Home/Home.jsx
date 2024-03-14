@@ -4,7 +4,14 @@ import hero from "../../assets/hero.jpg";
 import heroText from "../../assets/heroText.jpg";
 import Button from "./Button";
 import Navbar from "./Navbar";
+import { useNavigate } from "react-router-dom";
 export default function Home() {
+  const navigate=useNavigate()
+
+  const handleSubmit=()=>{
+    console.log("helo")
+navigate("/complaint-form")
+  }
   return (
     <Section>
       <Navbar />
@@ -24,7 +31,7 @@ export default function Home() {
           or grievances related to environmental problems they encounter.
           </p>
           <div className="buttons">
-            <Button blue text="Explore Now" />
+            <Button onClick={handleSubmit} blue text="Explore Now" />
             {/* <Button text="Create NFT" /> */}
           </div>
           {/* <div className="data">

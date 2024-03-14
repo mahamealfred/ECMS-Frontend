@@ -21,15 +21,15 @@ function Sidebar() {
             </li>
             <li>
               <SiDatacamp />
-              <a href="#">Complaint</a>
+              <a href="/dashboard/complaint-categories">Category</a>
             </li>
             <li>
               <Si1001Tracklists />
-              <a href="#">Approved Complaints</a>
+              <a href="/dashboard/complaints">Complaints</a>
             </li>
             <li>
               <HiMusicNote />
-              <a href="#">Denied Complaints</a>
+              <a href="#">Aproved Complaints</a>
             </li>
             <li>
               <FiUsers />

@@ -86,6 +86,7 @@ const data = [
   {
     view: 2490,
   },
+  
 ];
 
 function DailyMetric() {
