@@ -3,23 +3,33 @@ import './Form.scss';
 import Navbar from "../components/Home/Navbar";
 import { fetchAllCategories } from '../apis/categoriesController';
 import { fetchAllQuestions } from '../apis/questionController';
+import { addNewComplaint, fetchAllComplaints } from '../apis/complaintController';
+import { Snackbar } from '@mui/material';
 
 function App() {
   const [categoryData, setCategoryData] = useState([])
   const [questionData,setQuestionData]=useState([])
+  const [complaintData,setComplaintData]=useState([])
   const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [open, setOpen] = useState(false);
+  const [successMessage,setSuccessMessage]=useState("")
+  const [errorMessage,setErrorMessage]=useState(null)
+
+  const [openSuccess,setOpenSuccess]=useState(false)
+  const [vertical,setVertical]=useState("top")
+  const [horizontal,setHorizontal]=useState("right")
   const [formData, setFormData] = useState({
     date: '',
     time: '',
     location: {
+      state: '',
       address: '',
       city: '',
-      state: '',
+     
       country: ''
     },
     description: '',
     category: '',
-    severity: {},
     additionalDetails: '',
     files: [],
     contact: {
@@ -29,6 +39,62 @@ function App() {
     },
     consent: false
   });
+//add new Complaints
+
+const handleNewCategory=async()=>{
+  
+    try {
+  
+      const response=await addNewComplaint(formData,selectedAnswers)
+      if(response.responseCode===201){
+      //  setOpen(false)
+        setSuccessMessage(response.responseDescription)
+        setFormData({
+          date: '',
+          time: '',
+          location: {
+            state: '',
+            address: '',
+            city: '',
+           
+            country: ''
+          },
+          description: '',
+          category: '',
+          additionalDetails: '',
+          files: [],
+          contact: {
+            name: '',
+            email: '',
+            phone: ''
+          },
+          consent: false
+        })
+       setOpenSuccess(true)
+        
+      }else{
+        setSuccessMessage(response.responseDescription)
+      }
+      
+    } catch (error) {
+      console.log("error:",error)
+      setSuccessMessage(error)
+    }
+  
+    }
+    const handleClickOpen = () => {
+      setOpen(true);
+    };
+    const handleCloseSnack=()=>{
+      setSuccessMessage("")
+      setOpenSuccess(false)
+    }
+  
+    const handleClose = () => {
+    
+      setOpen(false);
+    };
+
   //Fecth Category
   const fetchCategory = async () => {
     try {
@@ -59,15 +125,16 @@ function App() {
     if (categoryData.length < 1) {
       await fetchCategory()
         }
-        if (questionData.length < 1) {
+    if (questionData.length < 1) {
           await fetchQuestions()
-            }
+       }
+     
   }, []);
   const handleSelectChange = (event, questionId) => {
     setSelectedAnswers({
       ...selectedAnswers,
       [questionId]: event.target.value
-    });
+  });
   };
 
   const handleInputChange = (e) => {
@@ -102,12 +169,20 @@ function App() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    console.log(formData, selectedAnswers); // You can send this data to your backend or perform any other action
+  handleNewCategory()// You can send this data to your backend or perform any other action
   };
 
   return (
     <React.Fragment>
       <Navbar/>
+
+      <Snackbar
+  anchorOrigin={{ vertical, horizontal }}
+  open={openSuccess}
+  autoHideDuration={5000}
+  onClose={handleCloseSnack}
+  message={successMessage?successMessage:"Please Try Again with corrte data"}
+/>
  <div className="form_container">
       <form onSubmit={handleSubmit}>
         <label>Date and Time of Observation:</label>
@@ -138,7 +213,7 @@ function App() {
         <div key={question.id}>
           <label>{question.name}</label>
           <select
-            
+          
             value={selectedAnswers[question.id] || ''}
             onChange={(event) => handleSelectChange(event, question.id)}
           >
