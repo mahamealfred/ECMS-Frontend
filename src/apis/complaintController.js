@@ -29,23 +29,27 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
         }
       })
       .catch((err) => {
-        serverResponse.responseDescription =
-          " ACCESS PROCESSING ERROR -" + err;
-  
-        if (!err.response) {
-        } else if (err.response.status === 400) {
-        } else if (err.response.status === 401) {
-        } else {
+       
+        if (err.response.status == 400) {
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
         }
-        //errRef.current.focus();
+        else if(err.response.status == 401){
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
+        }
+        else{
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
+        } 
       });
   
     return serverResponse;
   };
 
 
-  //add category
-  const addNewComplaint= async (formData,selectedAnswers) => {
+  //add complaint
+  const addNewComplaint= async (formData,selectedAnswers,total) => {
     const serverResponse = {
       responseCode: "",
       responseDescription: "",
@@ -67,7 +71,8 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
       time:formData.time,
       description:formData.description,
       location:formData.location,
-      answers:selectedAnswers
+      answers:selectedAnswers,
+      total:total
       
       });
       
@@ -94,16 +99,19 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
         }
       })
       .catch((err) => {
-        console.log(err.response.data.errors.error)
-        serverResponse.responseDescription =
-          " ACCESS PROCESSING ERROR -" + err;
-  
-        if (!err.response) {
-        } else if (err.response.status === 400) {
-        } else if (err.response.status === 401) {
-        } else {
+       
+        if (err.response.status == 400) {
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
         }
-        //errRef.current.focus();
+        else if(err.response.status == 401){
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
+        }
+        else{
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
+        } 
       });
   
     return serverResponse;
@@ -139,15 +147,19 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
         }
       })
       .catch((err) => {
-        serverResponse.responseDescription =
-          " ACCESS PROCESSING ERROR -" + err;
-  
-        if (!err.response) {
-        } else if (err.response.status === 400) {
-        } else if (err.response.status === 401) {
-        } else {
+       
+        if (err.response.status == 400) {
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
         }
-        //errRef.current.focus();
+        else if(err.response.status == 401){
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
+        }
+        else{
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
+        } 
       });
   
     return serverResponse;

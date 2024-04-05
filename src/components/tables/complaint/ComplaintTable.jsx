@@ -12,90 +12,34 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import { Button } from "@mui/material";
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
+import { fetchAllComplaints } from "../../../apis/complaintController";
 
 
 
 const TABLE_HEADS = [
-  "Products",
-  "Order ID",
   "Date",
-  "Customer name",
+  "Time",
+  "Category",
+  "Location Name",
   "Status",
-  "Amount",
+  "Total",
   "Action",
 ];
 
-const TABLE_DATA = [
-  {
-    id: 100,
-    name: "Iphone 13 Pro",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "delivered",
-    amount: 400,
-  },
-  {
-    id: 101,
-    name: "Macbook Pro",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "pending",
-    amount: 288,
-  },
-  {
-    id: 102,
-    name: "Apple Watch",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "canceled",
-    amount: 500,
-  },
-  {
-    id: 103,
-    name: "Microsoft Book",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "delivered",
-    amount: 100,
-  },
-  {
-    id: 104,
-    name: "Apple Pen",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "delivered",
-    amount: 60,
-  },
-  {
-    id: 105,
-    name: "Airpods",
-    order_id: 11232,
-    date: "Jun 29,2022",
-    customer: "Afaq Karim",
-    status: "delivered",
-    amount: 80,
-  },
-  
-];
 
 
 const ComplaintTable = () => {
-  const [categoryData, setCategoryData] = useState([])
+  const [complaintData, setComplaintData] = useState([])
   const [name,setName]=useState("")
   const [open, setOpen] = useState(false);
   const [successMessage,setSuccessMessage]=useState("")
   const [errorMessage,setErrorMessage]=useState(null)
-
+  const [openView,setOpenView]=useState(false)
   const [openSuccess,setOpenSuccess]=useState(false)
   const [vertical,setVertical]=useState("top")
   const [horizontal,setHorizontal]=useState("right")
-  
 
+  
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -141,9 +85,9 @@ if(!name){
   //Fecth Category
   const fetchCategory = async () => {
     try {
-      const response = await fetchAllCategories();
+      const response = await fetchAllComplaints();
       if (response.responseCode === 200) {
-        setCategoryData(response.data)
+        setComplaintData(response.data)
       }
        
     } catch (error) {
@@ -151,7 +95,7 @@ if(!name){
     }
   }
   useEffect(async () => {
-    if (categoryData.length < 1) {
+    if (complaintData.length < 1) {
       await fetchCategory()
         }
   }, []);
@@ -199,7 +143,7 @@ if(!name){
       <Navbar />
       <section className="content-area-table">
       <div className="data-table-info">
-        <h4 className="data-table-title">Latest Orders</h4>
+        <h4 className="data-table-title">List of Complaints</h4>
       </div>
       <div className="data-table-diagram">
         <table>
@@ -211,13 +155,14 @@ if(!name){
             </tr>
           </thead>
           <tbody>
-            {TABLE_DATA?.map((dataItem) => {
+            {complaintData && complaintData.map((dataItem) => {
+              
               return (
                 <tr key={dataItem.id}>
-                  <td>{dataItem.name}</td>
-                  <td>{dataItem.order_id}</td>
                   <td>{dataItem.date}</td>
-                  <td>{dataItem.customer}</td>
+                  <td>{dataItem.time}</td>
+                  <td>{dataItem?.Category?.name}</td>
+                  <td>{dataItem?.Location?.name}</td>
                   <td>
                     <div className="dt-status">
                       <span
@@ -226,9 +171,28 @@ if(!name){
                       <span className="dt-status-text">{dataItem.status}</span>
                     </div>
                   </td>
-                  <td>${dataItem.amount.toFixed(2)}</td>
+                  <td>{dataItem.totalParcentage} %</td>
                   <td className="dt-cell-action">
-                    <AreaTableAction amount={dataItem.amount} order_id={dataItem.order_id}/>
+                    <AreaTableAction 
+                    // state={{
+                    //   id:dataItem.id
+                    // }}
+                     id={dataItem.id}
+                      date={dataItem.date}
+                      time={dataItem.time}
+                      category={dataItem.Category.name}
+                      locationName={dataItem.Location.name}
+                      firstName={dataItem.User?.firstName}
+                      lastName={dataItem.User?.lastName}
+                      address={dataItem.Location.address.address}
+                      city={dataItem.Location?.address?.city}
+                      country={dataItem.Location?.address?.country}
+                      description={dataItem.description}
+                      additionalDetails={dataItem.additionalDetails}
+                      total={dataItem.totalParcentage}
+                      //  setOpenView={setOpenView} 
+                      //  openView={openView} 
+                        />
                   </td>
                 </tr>
               );

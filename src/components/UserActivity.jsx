@@ -39,8 +39,32 @@ const data = [
     songListened: 4300,
   },
 ];
+const mapComplaintsToChartData = (complaintsData) => {
+  const dayCounts = {};
+  complaintsData.forEach(complaint => {
+    const date = new Date(complaint.createdAt);
+    const day = date.toLocaleDateString('en-US', { weekday: 'short' });
+    if (dayCounts[day]) {
+      dayCounts[day]++;
+    } else {
+      dayCounts[day] = 1;
+    }
+  });
 
-function UserActivity() {
+  // Convert day counts to chart data format
+  const chartData = Object.keys(dayCounts).map(day => ({
+    name: day,
+    songDiscovered: dayCounts[day],
+    songListened: dayCounts[day],
+  }));
+
+  return chartData;
+};
+
+function UserActivity(complaintData) {
+ 
+  const chartData = mapComplaintsToChartData(complaintData.complaintData);
+
   return (
     <div className="user__activity">
       <div className="user__activity__info">
@@ -53,7 +77,7 @@ function UserActivity() {
         </div>
       </div>
       <ResponsiveContainer width="100%" height="70%">
-        <BarChart data={data}>
+        <BarChart data={chartData}>
           <XAxis dataKey="name" axisLine={false} tickLine={false} />
           <Tooltip />
           <Bar dataKey="songDiscovered" stackId="a" fill="#4361ee" />

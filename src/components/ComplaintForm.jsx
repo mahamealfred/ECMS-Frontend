@@ -10,7 +10,7 @@ function App() {
   const [categoryData, setCategoryData] = useState([])
   const [questionData,setQuestionData]=useState([])
   const [complaintData,setComplaintData]=useState([])
-  const [selectedAnswers, setSelectedAnswers] = useState({});
+  const [selectedAnswers, setSelectedAnswers] = useState([]);
   const [open, setOpen] = useState(false);
   const [successMessage,setSuccessMessage]=useState("")
   const [errorMessage,setErrorMessage]=useState(null)
@@ -39,13 +39,113 @@ function App() {
     },
     consent: false
   });
-//add new Complaints
 
-const handleNewCategory=async()=>{
+  //Calculate percentage of category
+const calculateTotalCategory=()=>{
+  let total=0;
+  //waste disposal
+  if(formData.category==="80ad4e9f-392a-4b93-9813-7b522629aa1d"){
+    total=total + 20
+  }
+  else if(formData.category==="8f2647eb-d8d9-4199-b94a-d09ea451f6d7"){
+   //deforestation
+   total=total + 25
+  }
+  else if(formData.category==="5b7a77f1-d6f8-40e8-ab8e-83cd1dfca350"){
+    //water cantamination
+    total=total + 15
+  }
+  else if(formData.category==="56b9e22d-bc74-4cc8-ad4e-a97a7d1368b5"){
+    //Air quality
+    total=total + 20
+  }
+  else{
+    //Air quality
+    total=total + 15
+  }
+  return total
+}
+
+//Calculate percentage of description
+const calculateTotalDescription=()=>{
+  let total=0;
+  if(formData.description.length>20){
+    total=total + 20
+  }
+  else{ 
+    total=total+10
+  }
+  return total
+}
+
+//Calculate percentage of additional details
+const calculateTotalAdditionalDetails=()=>{
+  let total=0;
+  if(formData.additionalDetails.length>20){
+    total=total + 20
+  }
+  else if(formData.additionalDetails.length>0 && formData.additionalDetails.length<=20){
+    total=total + 10
+  }
+  else{ 
+    total=total
+  }
+  return total
+}
+//Calculate percentage of  questions
+const calculateTotalQuestions=()=>{
+  let total=0;
+
+  for (const key in selectedAnswers) {
+    if (selectedAnswers.hasOwnProperty(key)) {
+        const value = selectedAnswers[key];
+        console.log(`Key: ${key}, Value: ${value}`);
+        if(value==="Low" || value==="Occasionally"){
+          total=total + 5
+        }
+        else if(value==="Moderate" || value==="Monthly" || value==="Weekly"){
+          total=total + 10
+        }else{
+          total=total + 20 
+        }
+    }
+}
+
+  return total
+}
+
+
+//Calculate percentage of  questions
+const calculateTotalFile=()=>{
+  let total=0;
+  if(formData.files.length>0){
+    total=total + 10
+  }
+  else{ 
+    total=total
+  }
+  return total
+}
+
+const calculatePercentage=()=>{
+  let totalPerc=0
+  let totalFile=calculateTotalFile()
+  let totalQuestion=calculateTotalQuestions();
+  let totalDescri=calculateTotalDescription()
+  let totalAdditional=calculateTotalAdditionalDetails();
+  let totalCategory=calculateTotalCategory()
   
+  totalPerc=totalFile + totalAdditional +totalCategory + totalDescri + totalQuestion
+  return totalPerc
+}
+
+
+//add new Complaints
+const handleNewCategory=async()=>{
+  const total=calculatePercentage()
     try {
   
-      const response=await addNewComplaint(formData,selectedAnswers)
+      const response=await addNewComplaint(formData,selectedAnswers,total)
       if(response.responseCode===201){
       //  setOpen(false)
         setSuccessMessage(response.responseDescription)
@@ -238,7 +338,7 @@ const handleNewCategory=async()=>{
       ))} */}
 
         <label>Additional Information:</label>
-        <textarea required  name="additionalDetails" placeholder="Any Additional Details or Comments" value={formData.additionalDetails} onChange={handleInputChange} />
+        <textarea  name="additionalDetails" placeholder="Any Additional Details or Comments" value={formData.additionalDetails} onChange={handleInputChange} />
 
         <label>Upload Supporting Documents or Images:</label>
         <input type="file" multiple onChange={handleFileUpload} />

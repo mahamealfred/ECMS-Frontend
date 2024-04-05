@@ -28,15 +28,19 @@ const base_url_get_all_questions ="http://localhost:8000/api/v1/question";
         }
       })
       .catch((err) => {
-        serverResponse.responseDescription =
-          " ACCESS PROCESSING ERROR -" + err;
-  
-        if (!err.response) {
-        } else if (err.response.status === 400) {
-        } else if (err.response.status === 401) {
-        } else {
+       
+        if (err.response.status == 400) {
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
         }
-        //errRef.current.focus();
+        else if(err.response.status == 401){
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
+        }
+        else{
+          serverResponse.responseDescription = err.response.data.error;
+          serverResponse.responseCode = err.response.data.responseCode;
+        } 
       });
   
     return serverResponse;

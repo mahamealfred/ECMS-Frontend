@@ -4,10 +4,18 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 import logo from "../../assets/logo.png";
 import Button from "./Button";
+import { useNavigate } from "react-router-dom";
 export default function Navbar() {
   const [isNavOpen, setIsNavOpen] = useState(false);
   const html = document.querySelector("html");
   html.addEventListener("click", (e) => setIsNavOpen(false));
+
+  const navigate=useNavigate()
+
+  const handleLogin=()=>{
+
+navigate("/login")
+  }
   return (
     <Nav state={isNavOpen ? 1 : 0}>
       <div className="brand">
@@ -41,7 +49,7 @@ export default function Navbar() {
           </li>
         </ul>
       </div>
-      <Button  dark text="Contact" />
+      <Button  dark text="Login"  onClick={handleLogin}/>
     </Nav>
   );
 }

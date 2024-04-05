@@ -3,41 +3,49 @@ import { useEffect, useRef, useState } from "react";
 import { HiDotsHorizontal } from "react-icons/hi";
 import { Link } from "react-router-dom";
 import { deleteCategory } from '../../../apis/categoriesController';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Paper,Typography } from '@mui/material';
 
 
 const TableAction = ({   
-  id,
-  setOpenSuccess,
-  setSuccessMessage,
-  fetchCategory}) => {
+  id, 
+  // setOpenView,openView, 
+  additionalDetails,
+  date,
+  time,
+  category,
+  locationName,
+  firstName,
+  lastName,
+  address,
+ city,
+ country,
+description,
+total
+ 
+
+}) => {
   const [showDropdown, setShowDropdown] = useState(false);
+  const [openView,setOpenView]=useState(false);
+
   const handleDropdown = () => {
+
     setShowDropdown(!showDropdown);
  
   };
-  
-const handleDelete=async()=>{
-  try {
-    const response=await deleteCategory(id)
-    if(response.responseCode===200){
-      setSuccessMessage(response.responseDescription)
-      fetchCategory()
-      setOpenSuccess(true)
-    }else{
-      setSuccessMessage(response.responseDescription)
-      setOpenSuccess(true) 
-    }
+ 
+  const handleOpenView= async(e)=>{
     
-  } catch (error) {
-    setSuccessMessage(error)
-      setOpenSuccess(true) 
+    setOpenView(true)
   }
-  
-}
+  const handleClose=()=>{
+    setOpenView(false)
+  }
+
   const dropdownRef = useRef(null);
 
   const handleClickOutside = (event) => {
     if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+      
       setShowDropdown(false);
     }
   };
@@ -51,6 +59,51 @@ const handleDelete=async()=>{
 
   return (
     <>
+   
+     <Dialog
+        open={openView}
+        onClose={handleClose}
+        
+      >
+         <Paper style={{ padding: '40px', marginBottom: '20px' }}>
+         <Typography variant="h6">View Complaint with ID: {id} </Typography>
+       <DialogContent>
+               <div className="response-details">
+             {/* <p><strong>ID:</strong> {id}</p> */}
+             <p><strong>Date:</strong> {date}</p>
+             <p><strong>Time:</strong> {time}</p>
+             <div className="response-description">
+             <p><strong>Category:</strong> {category}</p>
+             </div>
+             <div className="response-description">
+             <p><strong>Location:</strong> {locationName}, {address} {city}, {country}</p>
+              </div>
+              <div className="response-description">
+              <p><strong>Sender:</strong> {firstName} {lastName}</p>
+              </div>
+             
+              <div className="response-description">
+              <p><strong>Percentage:</strong> {total} %</p>
+              </div>
+          
+           </div>
+           <div className="response-description">
+             <p><strong>Additional Details:</strong></p>
+             <p>{additionalDetails}</p>
+           </div>
+           <div className="response-description">
+             <p><strong>Description:</strong></p>
+             <p>{description}</p>
+           </div>
+              
+         
+       </DialogContent>
+       <DialogActions>
+         <Button  onClick={handleClose} >Close</Button>
+       </DialogActions>
+         </Paper>
+       
+      </Dialog>
       <button
         type="button"
         className="action-dropdown-btn"
@@ -61,7 +114,7 @@ const handleDelete=async()=>{
           <div className="action-dropdown-menu" ref={dropdownRef}>
             <ul className="dropdown-menu-list">
               <li className="dropdown-menu-item">
-                <button  className="dropdown-menu-link">
+                <button onClick={(e)=>handleOpenView(e)} className="dropdown-menu-link">
                   View
                 </button>
               </li>
@@ -71,7 +124,7 @@ const handleDelete=async()=>{
                 </button>
               </li>
               <li className="dropdown-menu-item">
-                <button onClick={handleDelete} className="dropdown-menu-link">
+                <button  className="dropdown-menu-link">
                   Delete
                 </button>
               </li>

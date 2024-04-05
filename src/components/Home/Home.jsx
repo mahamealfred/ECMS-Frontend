@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import hero from "../../assets/hero.jpg";
 import heroText from "../../assets/heroText.jpg";
 import Button from "./Button";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
 export default function Home() {
   const navigate=useNavigate()
+  const { auth, logout } = useAuth();
+  useEffect(()=>{
+if(auth){
+  navigate("/dashboard")
+}
+  },[])
 
   const handleSubmit=()=>{
-    console.log("helo")
 navigate("/complaint-form")
   }
   return (

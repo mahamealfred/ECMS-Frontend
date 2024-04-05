@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
+import { fetchAllComplaints } from "../apis/complaintController";
 
 const data = [
   {
@@ -90,12 +91,54 @@ const data = [
 ];
 
 function DailyMetric() {
+  const [complaintData, setComplaintData] = useState([])
+
+
+
+  let dateRange = "No data available";
+  let chartData 
+  // Check if responseArray has elements
+  if (complaintData.length > 0) {
+    // Map responseArray data to match the format of your existing chart data
+     chartData = complaintData.map((item) => ({
+      date: item.createdAt,
+      view: parseInt(item.totalParcentage), // Assuming totalParcentage holds the data you want to display
+    }));
+
+    // Extract start and end dates from the response array
+    const startDate = new Date(complaintData[0].createdAt);
+    const endDate = new Date(complaintData[complaintData.length - 1].createdAt);
+
+    // Format the dates as desired (e.g., September 2021 - October 2021)
+    const formattedStartDate = startDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+    const formattedEndDate = endDate.toLocaleString('default', { month: 'long', year: 'numeric' });
+    dateRange = `${formattedStartDate} - ${formattedEndDate}`;
+  }
+
+
+  //Fecth Category
+  const fetchCategory = async () => {
+    try {
+      const response = await fetchAllComplaints();
+      if (response.responseCode === 200) {
+        setComplaintData(response.data)
+      }
+       
+    } catch (error) {
+      return error
+    }
+  }
+  useEffect(async () => {
+    if (complaintData.length < 1) {
+      await fetchCategory()
+        }
+  }, []);
   return (
     <div className="top__card">
-      <h3>Daily Views</h3>
-      <span>September 2021 - October 2021</span>
+      <h3>Daily Complaints</h3>
+      <span>{dateRange}</span>
       <ResponsiveContainer width="100%" height="80%">
-        <AreaChart data={data}>
+        <AreaChart data={chartData}>
           <defs>
             <linearGradient id="colorview" x1="0" y1="0" x2="0" y2="1">
               <stop offset="30%" stopColor="#8884d8" stopOpacity={0.4} />
@@ -103,7 +146,10 @@ function DailyMetric() {
               <stop offset="95%" stopColor="#FFFFFF" stopOpacity={0.2} />
             </linearGradient>
           </defs>
-          <Tooltip />
+          <Tooltip 
+            labelFormatter={(value) => `Date: ${value}`}
+            formatter={(value, name, props) => [`${props.payload.date}: ${value} %`, name]}
+          />
           <Area
             type="monotone"
             dataKey="view"

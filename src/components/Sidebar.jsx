@@ -5,8 +5,17 @@ import { FiUsers, FiSettings } from "react-icons/fi";
 import { SiDatacamp, Si1001Tracklists } from "react-icons/si";
 import Logo from "../assets/logo.png";
 import Player from "./Player";
+import Button from "./Home/Button";
+import { useAuth } from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
+  const {logout}=useAuth()
+  const navigate=useNavigate()
+  const handleLogout=()=>{
+    logout()
+    navigate("/")
+  }
   return (
     <div className="sidebar">
       <div className="upper__container">
@@ -37,7 +46,10 @@ function Sidebar() {
             </li>
             <li>
               <FiSettings />
-              <a href="#">Settings</a>
+              <a>
+              <Button blue text="Logout"  onClick={handleLogout}/>
+              </a>
+            
             </li>
           </ul>
         </div>
