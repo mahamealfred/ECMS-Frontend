@@ -4,6 +4,7 @@ import Sidebar from "./Sidebar";
 import "../scss/Styles.scss";
 import { useAuth } from "../context/AuthContext";
 
+
 // export default class Dashboard extends  Component{
 //     render(){
 //         return (
@@ -18,7 +19,8 @@ import { useAuth } from "../context/AuthContext";
 
 
 const Dashboard = () => {
-    const {auth}=useAuth()
+    const {auth,userInfo}=useAuth()
+
 
     const [token,setToken]=useState("")
 
@@ -31,7 +33,7 @@ const Dashboard = () => {
     <>
        {token ? (
         <div className="dashboard">
-           <Sidebar />
+           <Sidebar userInfo={JSON.parse(userInfo)}/>
           <Metrics />
        </div>
        ) : (

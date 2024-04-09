@@ -4,14 +4,30 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
+    
     .info {
       display: flex;
       align-items: center;
       gap: 1rem;
+      
       .avatar {
         img {
           border-radius: 3rem;
           height: 3rem;
+        }
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      flex-direction: column;
+
+      .info {
+        margin-top: 1rem;
+        flex-direction: column;
+        align-items: center;
+
+        .avatar {
+          margin-top: 1rem;
         }
       }
     }

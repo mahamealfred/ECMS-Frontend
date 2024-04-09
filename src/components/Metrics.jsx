@@ -7,9 +7,12 @@ import TrendingUsers from "./TrendingUsers";
 import MusicMetric from "./MusicMetric";
 import UserActivity from "./UserActivity";
 import { fetchAllComplaints } from "../apis/complaintController";
+import { useAuth } from "../context/AuthContext";
 
 function Metrics() {
-  const [complaintData, setComplaintData] = useState([])
+  const [complaintData, setComplaintData] = useState([]);
+  const {userInfo}=useAuth()
+  
   //Fecth Category
   const fetchCategory = async () => {
     try {
@@ -27,15 +30,16 @@ function Metrics() {
       await fetchCategory()
         }
   }, []);
+
   return (
     <div className="metrics">
-      <Navbar />
+      <Navbar  />
       <div className="grid-one">
         <DailyMetric />
         <MusicMetric />
       </div>
       <div className="grid-two">
-        <TrendingTracks />
+        <TrendingTracks complaintData={complaintData}/>
         <TrendingUsers />
         <UserActivity complaintData={complaintData}/>
       </div>

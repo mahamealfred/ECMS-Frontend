@@ -14,7 +14,7 @@ function LoginForm() {
     const [openSuccess,setOpenSuccess]=useState(false)
     const [vertical,setVertical]=useState("top")
     const [horizontal,setHorizontal]=useState("right")
-    const {login}=useAuth()
+    const {login,userDetails}=useAuth()
 
     const handleHome=()=>{
      navigate("/")
@@ -29,7 +29,10 @@ function LoginForm() {
    const response=await loginAuth(email,password)
    if(response.responseCode === 200){
     const token=response.data.token;
+    const userData=response.data.data
+    
     login(token)
+    userDetails(JSON.stringify(userData))
     // localStorage.setItem('authkey',token );
     navigate("/dashboard")
    }else{
@@ -37,6 +40,8 @@ function LoginForm() {
     setOpenSuccess(true)
    }
     }
+
+    
     return (
     <>
         <Snackbar

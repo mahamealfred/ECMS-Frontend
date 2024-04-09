@@ -69,8 +69,8 @@ function UserActivity(complaintData) {
     <div className="user__activity">
       <div className="user__activity__info">
         <div>
-          <h3>User Activity</h3>
-          <span>New Tracks</span>
+          <h3>Complaint by Category</h3>
+          {/* <span>New Tracks</span> */}
         </div>
         <div className="icon">
           <BsThreeDots />

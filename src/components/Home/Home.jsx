@@ -1,69 +1,59 @@
 import React, { useEffect } from "react";
 import styled from "styled-components";
 import hero from "../../assets/hero.jpg";
-import heroText from "../../assets/heroText.jpg";
 import Button from "./Button";
 import Navbar from "./Navbar";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-export default function Home() {
-  const navigate=useNavigate()
-  const { auth, logout } = useAuth();
-  useEffect(()=>{
-if(auth){
-  navigate("/dashboard")
-}
-  },[])
 
-  const handleSubmit=()=>{
-navigate("/complaint-form")
-  }
+export default function Home() {
+  const navigate = useNavigate();
+  const { auth } = useAuth();
+
+  useEffect(() => {
+    if (auth) {
+      navigate("/dashboard");
+    }
+  }, []);
+
+  const handleSubmit = () => {
+    navigate("/complaint-form");
+  };
+
   return (
     <Section>
       <Navbar />
       <div className="ellipse"></div>
       <div className="container">
         <div className="content">
-          <h1>
-          ENVIRONMENTAL {" "}
+          <h1 >
+            ENVIRONMENTAL{" "}
             <span>
-              {/* <img src={heroText} alt="Hero Text" /> */}
+              {/* <img src={hero} alt="Hero Text" /> */}
             </span>{" "}
             COMPLAINTS AND GRIEVANCES
             MANAGEMENT SYSTEM
           </h1>
           <p>
-          It serves as a centralized hub where individuals, communities, or organizations can submit complaints 
-          or grievances related to environmental problems they encounter.
+            It serves as a centralized hub where individuals, communities, or
+            organizations can submit complaints or grievances related to
+            environmental problems they encounter.
           </p>
           <div className="buttons">
-            <Button onClick={handleSubmit} blue text="Explore Now" />
-            {/* <Button text="Create NFT" /> */}
+            <Button onClick={handleSubmit} blue text="Start Now" />
           </div>
-          {/* <div className="data">
-            <div className="dataTab">
-              <h2>40K</h2>
-              <h5>Artwork</h5>
-            </div>
-            <div className="dataTab">
-              <h2>12K</h2>
-              <h5>Auction</h5>
-            </div>
-            <div className="dataTab">
-              <h2>20K</h2>
-              <h5>Artist</h5>
-            </div>
-          </div> */}
         </div>
-        <div className="image">
-          {/* <img src={hero} alt="hero" /> */}
-        </div>
+        {/* <div className="image">
+          <img src={hero} alt="hero" />
+        </div> */}
       </div>
     </Section>
   );
 }
+
 const Section = styled.section`
   margin: 0.5rem;
+  height: 100vh;
   background-image: radial-gradient(
     circle 580.6px at 10% 40%,
     rgb(26, 0, 61) 30%,
@@ -96,7 +86,6 @@ const Section = styled.section`
       gap: 2rem;
       margin-top: 5rem;
       padding-right: 2rem;
-      height:20rem;
       h1 {
         color: white;
         font-size: 3rem;
@@ -113,23 +102,6 @@ const Section = styled.section`
         display: flex;
         gap: 2rem;
       }
-      .data {
-        display: flex;
-        gap: 5rem;
-        .dataTab {
-          display: flex;
-          flex-direction: column;
-          gap: 1rem;
-          h2 {
-            font-size: 2rem;
-            color: white;
-          }
-          h5 {
-            text-align: center;
-            color: #a6a6a6;
-          }
-        }
-      }
     }
     .image {
       img {
@@ -137,7 +109,7 @@ const Section = styled.section`
       }
     }
   }
-  @media screen and (min-width: 280px) and (max-width: 1080px) {
+  @media screen and (max-width: 1080px) {
     margin: 0;
     border-radius: 0;
     .container {
@@ -162,15 +134,11 @@ const Section = styled.section`
           justify-content: center;
           align-items: center;
         }
-        .data {
-          justify-content: center;
-          align-items: center;
-          gap: 2rem;
-        }
       }
       .image {
         img {
-          height: 15rem;
+          height: auto;
+          max-width: 100%;
         }
       }
     }

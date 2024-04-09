@@ -5,33 +5,26 @@ import { MdClose } from "react-icons/md";
 import logo from "../../assets/logo.png";
 import Button from "./Button";
 import { useNavigate } from "react-router-dom";
+
 export default function Navbar() {
   const [isNavOpen, setIsNavOpen] = useState(false);
-  const html = document.querySelector("html");
-  html.addEventListener("click", (e) => setIsNavOpen(false));
+  const navigate = useNavigate();
 
-  const navigate=useNavigate()
+  const handleLogin = () => {
+    navigate("/login");
+  };
 
-  const handleLogin=()=>{
+  const toggleNav = () => {
+    setIsNavOpen((prev) => !prev);
+  };
 
-navigate("/login")
-  }
   return (
     <Nav state={isNavOpen ? 1 : 0}>
       <div className="brand">
         <img src={logo} alt="logo" />
       </div>
-      <div className="toggle">
-        {isNavOpen ? (
-          <MdClose onClick={() => setIsNavOpen(false)} />
-        ) : (
-          <GiHamburgerMenu
-            onClick={(e) => {
-              e.stopPropagation();
-              setIsNavOpen(true);
-            }}
-          />
-        )}
+      <div className="toggle" onClick={toggleNav}>
+        {isNavOpen ? <MdClose /> : <GiHamburgerMenu />}
       </div>
       <div className={`links ${isNavOpen ? "show" : ""}`}>
         <ul>
@@ -44,12 +37,12 @@ navigate("/login")
           <li>
             <a href="sellers">Contact</a>
           </li>
-          <li>
+          {/* <li>
             <a href="create">Create</a>
-          </li>
+          </li> */}
         </ul>
       </div>
-      <Button  dark text="Login"  onClick={handleLogin}/>
+      <Button dark text="Login" onClick={handleLogin} />
     </Nav>
   );
 }
@@ -67,6 +60,7 @@ const Nav = styled.nav`
   }
   .toggle {
     display: none;
+    cursor: pointer;
   }
   .links {
     height: 4rem;
@@ -92,7 +86,7 @@ const Nav = styled.nav`
       }
     }
   }
-  @media screen and (min-width: 280px) and (max-width: 1080px) {
+  @media screen and (max-width: 1080px) {
     position: relative;
     padding: 1rem 2rem;
     z-index: 999;

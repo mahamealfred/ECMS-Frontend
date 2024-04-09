@@ -8,6 +8,7 @@
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+
   .upper__container {
     .brand {
       cursor: pointer;
@@ -15,6 +16,7 @@
         height: 6rem;
       }
     }
+
     .links {
       li {
         padding-right: 0;
@@ -24,12 +26,28 @@
         align-items: center;
         gap: 1rem;
         font-size: 1.2rem;
+
         svg {
           color: white;
         }
+
         a {
           text-decoration: none;
           color: white;
+        }
+      }
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    flex-direction: row;
+    .upper__container {
+      justify-content: space-between;
+      .links {
+        flex-direction: column;
+        align-items: flex-start;
+        li {
+          margin: 1rem 0;
         }
       }
     }

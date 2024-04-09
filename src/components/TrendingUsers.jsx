@@ -10,15 +10,15 @@ function TrendingUsers() {
     <div className="trending__users">
       <div className="trending__info">
         <div>
-          <h3>Trending Users</h3>
-          <span>Today</span>
+          <h3> Users</h3>
+          {/* <span>Today</span> */}
         </div>
         <div className="icon">
           <BsArrowRight />
         </div>
       </div>
       <div className="trend">
-        <img src={trend1} alt="" />
+        {/* <img src={trend1} alt="" /> */}
         <div className="trend__info">
           <h4>Taylor Swift</h4>
           <span>2M Followers</span>

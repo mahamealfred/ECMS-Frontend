@@ -102,7 +102,7 @@ if(!name){
   open={openSuccess}
   autoHideDuration={5000}
   onClose={handleCloseSnack}
-  message={successMessage?successMessage:"Please Try Again with corrte data"}
+  message={successMessage?successMessage:"Please Try Again with correct data"}
 />
       <Dialog
         open={open}

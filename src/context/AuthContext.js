@@ -6,8 +6,13 @@ const AuthContext = createContext();
 // Create a provider component
 export const AuthProvider = ({ children }) => {
   const [auth, setAuth] = useState(localStorage.getItem('authKey'));
+  const [userInfo,setUserInfo]=useState(localStorage.getItem('userIfon'))
 
-
+const userDetails=(details)=>{
+  localStorage.setItem('userIfon', details);
+    setUserInfo(details);
+  
+}
   const login = (token) => {
     localStorage.setItem('authKey', token);
     setAuth(token);
@@ -15,12 +20,13 @@ export const AuthProvider = ({ children }) => {
 
   const logout = () => {
     localStorage.removeItem('authKey');
+    localStorage.removeItem('userIfon')
     setAuth(null);
 
   };
 
   return (
-    <AuthContext.Provider value={{ auth, login, logout }}>
+    <AuthContext.Provider value={{ auth, login, logout,userDetails,userInfo }}>
       {children}
     </AuthContext.Provider>
   );

@@ -10,12 +10,13 @@ import { useAuth } from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 function Sidebar() {
-  const {logout}=useAuth()
+  const {logout,userInfo}=useAuth()
   const navigate=useNavigate()
   const handleLogout=()=>{
     logout()
     navigate("/")
   }
+
   return (
     <div className="sidebar">
       <div className="upper__container">
@@ -24,7 +25,11 @@ function Sidebar() {
         </div>
         <div className="links">
           <ul>
-            <li className="active">
+            {
+              JSON.parse(userInfo).role ==="Admin"?(
+
+                <>
+                 <li className="active">
               <IoStatsChartSharp />
               <a href="/dashboard">Overview</a>
             </li>
@@ -33,17 +38,33 @@ function Sidebar() {
               <a href="/dashboard/complaint-categories">Category</a>
             </li>
             <li>
-              <Si1001Tracklists />
+            <SiDatacamp />
               <a href="/dashboard/complaints">Complaints</a>
             </li>
             <li>
-              <HiMusicNote />
+            <SiDatacamp />
               <a href="#">Aproved Complaints</a>
             </li>
             <li>
               <FiUsers />
               <a href="/dashboard/users">Users</a>
             </li>
+                </>
+              ):(
+                <>
+                  <li className="active">
+              <IoStatsChartSharp />
+              <a href="/dashboard">Overview</a>
+            </li>
+      
+            <li>
+              <HiMusicNote />
+              <a href="#">Pending Complaints</a>
+            </li>
+                </>
+              )
+            }
+          
             <li>
               <FiSettings />
               <a>
