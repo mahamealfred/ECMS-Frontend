@@ -8,11 +8,14 @@ function Navbar() {
     <div className="navbar">
       <h1>Overview</h1>
       <div className="info">
-        <h4>{ JSON.parse(userInfo).email }</h4>
+        <h4>{ JSON.parse(userInfo)?.email}</h4>
+        <p>{ JSON.parse(userInfo)?.role}</p>
         <div className="avatar">
           <img src={avatar} alt="" />
         </div>
+       
       </div>
+     
     </div>
   );
 }

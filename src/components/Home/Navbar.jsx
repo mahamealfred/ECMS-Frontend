@@ -32,10 +32,10 @@ export default function Navbar() {
             <a href="/">Home</a>
           </li>
           <li>
-            <a href="maketplace">About</a>
+            <a href="#">About</a>
           </li>
           <li>
-            <a href="sellers">Contact</a>
+            <a href="#">Contact</a>
           </li>
           {/* <li>
             <a href="create">Create</a>

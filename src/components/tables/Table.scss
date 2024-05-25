@@ -1,8 +1,48 @@
+
 .response-container {
   background-color: #f0f0f0;
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.export-buttons {
+  display: flex;
+  gap: 10px; /* Space between buttons */
+}
+
+.export-buttons button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.export-buttons button:nth-child(1) {
+  color: white;
+  background-color: #007bff; /* Blue color for PDF button */
+}
+
+.export-buttons button:nth-child(1):hover {
+  background-color: #0056b3; /* Darker blue on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+.export-buttons button:nth-child(2) {
+  color: white;
+  background-color: #28a745; /* Green color for Excel button */
+}
+
+.export-buttons button:nth-child(2):hover {
+  background-color: #218838; /* Darker green on hover */
+  transform: scale(1.05); /* Slightly enlarge on hover */
+}
+
+@media print {
+  .hide-on-print {
+    display: none;
+  }
 }
 
 .response-header {

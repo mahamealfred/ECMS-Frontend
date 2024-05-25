@@ -16,6 +16,8 @@ import { fetchAllComplaints } from "../../../apis/complaintController";
 
 
 
+
+
 const TABLE_HEADS = [
   "Date",
   "Time",
@@ -100,6 +102,21 @@ if(!name){
       await fetchCategory()
         }
   }, []);
+
+  
+  const handleExportPDF = () => {
+    window.print();
+  };
+
+  const handleExportExcel = () => {
+    const table = document.getElementById("complaint-table");
+    const html = table.outerHTML;
+    const url = 'data:application/vnd.ms-excel;base64,' + btoa(html);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'complaints.xls';
+    a.click();
+  };
   return (
     <React.Fragment>
     
@@ -143,23 +160,34 @@ if(!name){
  <div className="metrics">
       <Navbar />
       <section className="content-area-table">
+        
       <div className="data-table-info">
-        <h4 className="data-table-title">List of Complaints</h4>
+        <h4 className="data-table-title">List of Delivered Complaints</h4>
+        <div className="export-buttons">
+            <button onClick={handleExportPDF}>Export as PDF</button>
+            <button onClick={handleExportExcel}>Export as Excel</button>
+          </div>
       </div>
       <div className="data-table-diagram">
-        <table>
+        <table id="complaint-table">
           <thead>
             <tr>
               {TABLE_HEADS?.map((th, index) => (
+                th==="Action"?
+                <th className="hide-on-print" key={index}>{th}</th>:
                 <th key={index}>{th}</th>
               ))}
             </tr>
           </thead>
           <tbody>
-            {complaintData && complaintData.map((dataItem) => {
+          {complaintData &&
+    complaintData
+      .filter((dataItem) => dataItem.status.toLowerCase() === 'delivered')
+      .map((dataItem) => {
               
               return (
                 <tr key={dataItem.id}>
+            
                   <td>{dataItem.date}</td>
                   <td>{dataItem.time}</td>
                   <td>{dataItem?.Category?.name}</td>
@@ -173,7 +201,7 @@ if(!name){
                     </div>
                   </td>
                   <td>{dataItem.totalParcentage} %</td>
-                  <td className="dt-cell-action">
+                  <td className="dt-cell-action hide-on-print">
                     <AreaTableAction 
                     // state={{
                     //   id:dataItem.id

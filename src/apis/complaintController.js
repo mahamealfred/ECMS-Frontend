@@ -6,6 +6,9 @@ const base_url_get_all_complaints ="http://localhost:8000/api/v1/complaint";
 //new category
 const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
 
+const base_url_approve_complaint="http://localhost:8000/api/v1/complaint/approve/"
+const  base_url_cancel_complaint="http://localhost:8000/api/v1/complaint/cancel/"
+
   const fetchAllComplaints = async () => {
     const serverResponse = {
       responseCode: "",
@@ -49,7 +52,7 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
 
 
   //add complaint
-  const addNewComplaint= async (formData,selectedAnswers,total) => {
+  const addNewComplaint= async (formData,selectedAnswers,total,image) => {
     const serverResponse = {
       responseCode: "",
       responseDescription: "",
@@ -63,7 +66,7 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
       additionalDetails: formData.additionalDetails,
       category: formData.category,
       consent: formData.consent,
-      locationName: "ACE3 LTD",
+      locationName: formData.organizationName,
       firstName: formData.contact.name.split(" ")[0],
       lastName: formData.contact.name.split(" ")[1],
       email: formData.contact.email,
@@ -72,7 +75,8 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
       description:formData.description,
       location:formData.location,
       answers:selectedAnswers,
-      total:total
+      total:total,
+      images:image
       
       });
       
@@ -85,7 +89,7 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
         },
         data : data
     }
-    console.log("request data:",data)
+  
     await axios
       .request(config)
       .then((response) => {
@@ -116,6 +120,122 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
   
     return serverResponse;
   };
+
+//approve 
+const approveComplaint= async (id) => {
+  const serverResponse = {
+    responseCode: "",
+    responseDescription: "",
+    communicationStatus: "",
+    responseDate: "",
+    data: "",
+  };
+
+  
+    
+    let config = {
+      method: 'put',
+      maxBodyLength: Infinity,
+      url: base_url_approve_complaint+id,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+  }
+
+  await axios
+    .request(config)
+    .then((response) => {
+      if (response.data.responseCode === 200) {
+        serverResponse.responseDescription = response.data.responseDescription;
+        serverResponse.responseCode = response.data.responseCode;
+        serverResponse.data = response.data.data;
+      } else {
+        serverResponse.responseDescription = response.data.responseDescription;
+        serverResponse.responseCode = response.data.responseCode
+      }
+    })
+    .catch((err) => {
+     
+      if (err.response.status == 400) {
+        serverResponse.responseDescription = err.response.data.error;
+        serverResponse.responseCode = err.response.data.responseCode;
+      }
+      else if(err.response.status == 401){
+        serverResponse.responseDescription = err.response.data.error;
+        serverResponse.responseCode = err.response.data.responseCode;
+      }
+      else{
+        serverResponse.responseDescription = err.response.data.error;
+        serverResponse.responseCode = err.response.data.responseCode;
+      } 
+    });
+
+  return serverResponse;
+};
+
+
+//cancel
+const cancelComplaint= async (id) => {
+  const serverResponse = {
+    responseCode: "",
+    responseDescription: "",
+    communicationStatus: "",
+    responseDate: "",
+    data: "",
+  };
+
+  
+    
+    let config = {
+      method: 'put',
+      maxBodyLength: Infinity,
+      url: base_url_cancel_complaint+id,
+      headers: { 
+        'Content-Type': 'application/json'
+      },
+  }
+
+  await axios
+    .request(config)
+    .then((response) => {
+      if (response.data.responseCode === 200) {
+        serverResponse.responseDescription = response.data.responseDescription;
+        serverResponse.responseCode = response.data.responseCode;
+        serverResponse.data = response.data.data;
+      } else {
+        serverResponse.responseDescription = response.data.responseDescription;
+        serverResponse.responseCode = response.data.responseCode
+      }
+    })
+    .catch((err) => {
+     
+      if (err.response.status == 400) {
+        serverResponse.responseDescription = err.response.data.error;
+        serverResponse.responseCode = err.response.data.responseCode;
+      }
+      else if(err.response.status == 401){
+        serverResponse.responseDescription = err.response.data.error;
+        serverResponse.responseCode = err.response.data.responseCode;
+      }
+      else{
+        serverResponse.responseDescription = err.response.data.error;
+        serverResponse.responseCode = err.response.data.responseCode;
+      } 
+    });
+
+  return serverResponse;
+};
+
+
+
+
+
+
+
+
+
+
+
   const getComplaint = async (id) => {
     const serverResponse = {
       responseCode: "",
@@ -167,5 +287,7 @@ const base_url_add_new_complaint ="http://localhost:8000/api/v1/complaint";
   
   export {
     fetchAllComplaints,
-    addNewComplaint
+    addNewComplaint,
+    approveComplaint,
+    cancelComplaint
   }

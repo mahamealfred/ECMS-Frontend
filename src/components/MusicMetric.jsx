@@ -49,7 +49,7 @@ function MusicMetric() {
   // Step 2: Iterate over the array of complaints
   complaintData.forEach(complaint => {
     // Step 3: Extract the category name
-    const categoryName = complaint.Category.name;
+    const categoryName = complaint?.Category?.name;
 
     // Step 4: Update the count for the category
     if (categoryCounts[categoryName]) {

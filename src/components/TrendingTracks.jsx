@@ -1,63 +1,60 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { BsArrowRight } from "react-icons/bs";
+import { fetchAllComplaints } from "../apis/complaintController"; // Import the CSS file
+import "./TrendingTracks.css"
 
-import song1 from "../assets/song1.jpeg";
-import song2 from "../assets/song2.jpeg";
-import song3 from "../assets/song3.jpeg";
+function TrendingTracks({ complaintData }) {
+  const groupComplaintsByCategoryAndStatus = () => {
+    const groupedComplaints = {};
 
-function TrendingTracks(complaintData) {
+    complaintData?.complaintData?.forEach((complaint) => {
+      const categoryName = complaint?.Category?.name;
+      const status = complaint?.status;
 
-  const [complaintsByCategory, setComplaintsByCategory] = useState([]);
+      if (!groupedComplaints[categoryName]) {
+        groupedComplaints[categoryName] = {};
+      }
 
- // Function to group complaints by category and status
- const groupComplaintsByCategoryAndStatus = () => {
-  const groupedComplaints = {};
+      if (!groupedComplaints[categoryName][status]) {
+        groupedComplaints[categoryName][status] = 0;
+      }
 
-  complaintData.complaintData.forEach((complaint) => {
-    const categoryName = complaint.Category.name;
-    const status = complaint.status;
+      groupedComplaints[categoryName][status]++;
+    });
 
-    if (!groupedComplaints[categoryName]) {
-      groupedComplaints[categoryName] = {};
-    }
+    return groupedComplaints;
+  };
 
-    if (!groupedComplaints[categoryName][status]) {
-      groupedComplaints[categoryName][status] = 0;
-    }
+  const groupedComplaints = groupComplaintsByCategoryAndStatus();
 
-    groupedComplaints[categoryName][status]++;
-  });
-
-  return groupedComplaints;
-};
-
-const groupedComplaints = groupComplaintsByCategoryAndStatus();
-
-return (
-  <div className="trending__tracks">
-    <div className="trending__info">
-      <div >
-        <h3> Complaints Status</h3>
-        <span></span>
-      </div>
-      <div className="icon">
-        <BsArrowRight />
-      </div>
-    </div>
-    {Object.keys(groupedComplaints).map((categoryName) => (
-      <div key={categoryName} className="trend">
-        <h4>{categoryName}</h4>
-        <div className="status__counts">
-          {Object.entries(groupedComplaints[categoryName]).map(([status, count]) => (
-            <div className="status" key={status}>
-              <span>{status}:</span>
-              <span>{count}</span>
-            </div>
-          ))}
+  return (
+    <div className="trending__tracks">
+      <div className="trending__info">
+        <div>
+          <h3>Complaints Status</h3>
+          <span></span>
+        </div>
+        <div className="icon">
+          <BsArrowRight />
         </div>
       </div>
-    ))}
-  </div>
-);
+      {Object.keys(groupedComplaints).map((categoryName) => (
+        <div key={categoryName} className="trend">
+          <h4>{categoryName}</h4>
+          <div className="status__counts">
+            {Object.entries(groupedComplaints[categoryName])?.map(
+              ([status, count]) => (
+                <div className="status" key={status}>
+                  <span>{status}:</span>
+                  <span>{count}</span>
+                </div>
+              )
+            )}
+          </div>
+        </div>
+      ))}
+    </div>
+  );
 }
+
 export default TrendingTracks;

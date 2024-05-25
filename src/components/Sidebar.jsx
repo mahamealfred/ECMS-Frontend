@@ -26,7 +26,7 @@ function Sidebar() {
         <div className="links">
           <ul>
             {
-              JSON.parse(userInfo).role ==="Admin"?(
+              JSON.parse(userInfo)?.role ==="Admin"?(
 
                 <>
                  <li className="active">
@@ -43,14 +43,22 @@ function Sidebar() {
             </li>
             <li>
             <SiDatacamp />
-              <a href="#">Aproved Complaints</a>
+              <a href="/dashboard/pending-complaints">Pending Complaints</a>
+            </li>
+            <li>
+            <SiDatacamp />
+              <a href="/dashboard/delivered-complaints">Delivered Complaints</a>
+            </li>
+            <li>
+            <SiDatacamp />
+              <a href="/dashboard/solved-complaints">Resolved Complaints</a>
             </li>
             <li>
               <FiUsers />
               <a href="/dashboard/users">Users</a>
             </li>
                 </>
-              ):(
+              ):JSON.parse(userInfo)?.role ==="Supervisor"?(
                 <>
                   <li className="active">
               <IoStatsChartSharp />
@@ -58,11 +66,23 @@ function Sidebar() {
             </li>
       
             <li>
-              <HiMusicNote />
-              <a href="#">Pending Complaints</a>
+            <SiDatacamp />
+              <a href="/dashboard/delivered-complaints">Delivered Complaints</a>
             </li>
                 </>
-              )
+              ):JSON.parse(userInfo)?.role ==="Analyst"?(
+                <>
+                  <li className="active">
+              <IoStatsChartSharp />
+              <a href="/dashboard">Overview</a>
+            </li>
+      
+            <li>
+            <SiDatacamp />
+              <a href="/dashboard/pending-complaints">Pending Complaints</a>
+            </li>
+                </>
+              ):"Please Login"
             }
           
             <li>
@@ -75,11 +95,11 @@ function Sidebar() {
           </ul>
         </div>
       </div>
-      <div className="lower__container">
+      {/* <div className="lower__container">
         <div className="music__container">
           <Player />
         </div>
-      </div>
+      </div> */}
     </div>
   );
 }

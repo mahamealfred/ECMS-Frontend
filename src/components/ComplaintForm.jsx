@@ -5,9 +5,11 @@ import { fetchAllCategories } from '../apis/categoriesController';
 import { fetchAllQuestions } from '../apis/questionController';
 import { addNewComplaint, fetchAllComplaints } from '../apis/complaintController';
 import { Snackbar } from '@mui/material';
+import { fetchOrganizations } from '../apis/organizationController';
 
 function App() {
   const [categoryData, setCategoryData] = useState([])
+  const [organizationData, setOrganizationData] = useState([])
   const [questionData,setQuestionData]=useState([])
   const [complaintData,setComplaintData]=useState([])
   const [selectedAnswers, setSelectedAnswers] = useState([]);
@@ -31,6 +33,7 @@ function App() {
     description: '',
     category: '',
     additionalDetails: '',
+    organizationName: '',
     files: [],
     contact: {
       name: '',
@@ -138,14 +141,49 @@ const calculatePercentage=()=>{
   totalPerc=totalFile + totalAdditional +totalCategory + totalDescri + totalQuestion
   return totalPerc
 }
+ //image
+ const [images, setImages] = useState([]);
 
+ const handleFileDrop = (event) => {
+   event.preventDefault();
+   const droppedFiles = event.dataTransfer.files;
+   const newImages = [];
+
+   for (let i = 0; i < droppedFiles.length; i++) {
+     newImages.push(droppedFiles[i]);
+   }
+
+   setImages([...images, ...newImages]);
+ };
+
+ const handleFileUploadImage = (event) => {
+   const uploadedFiles = event.target.files;
+   const newImages = [];
+
+   for (let i = 0; i < uploadedFiles.length; i++) {
+     newImages.push(uploadedFiles[i]);
+   }
+
+   setImages([...images, ...newImages]);
+ };
 
 //add new Complaints
 const handleNewCategory=async()=>{
+  const  savedFileNames=[]
+   let image= images?.map(file => file.name);
+    const file = image.map(file => {
+            console.log("files:",file)
+            if (file) {
+                const newName = Date.now() + '-' + file;
+                savedFileNames.push(newName);
+              }
+        });
+       
+ 
   const total=calculatePercentage()
     try {
   
-      const response=await addNewComplaint(formData,selectedAnswers,total)
+      const response=await addNewComplaint(formData,selectedAnswers,total,savedFileNames)
       if(response.responseCode===201){
       //  setOpen(false)
         setSuccessMessage(response.responseDescription)
@@ -221,6 +259,18 @@ const handleNewCategory=async()=>{
       return error
     }
   }
+    //fecth Questions
+    const fetchOrganizationsCallAPi = async () => {
+      try {
+        const response = await fetchOrganizations();
+        if (response.responseCode === 200) {
+          setOrganizationData(response.data)
+        }
+         
+      } catch (error) {
+        return error
+      }
+    }
   useEffect(async () => {
     if (categoryData.length < 1) {
       await fetchCategory()
@@ -228,8 +278,13 @@ const handleNewCategory=async()=>{
     if (questionData.length < 1) {
           await fetchQuestions()
        }
+
+       if (organizationData.length < 1) {
+        await fetchOrganizationsCallAPi()
+     }
      
   }, []);
+  
   const handleSelectChange = (event, questionId) => {
     setSelectedAnswers({
       ...selectedAnswers,
@@ -259,19 +314,13 @@ const handleNewCategory=async()=>{
   //   const { name, value, type, checked } = e.target;
   //   console.log("Ch",value)
   // };
-  const handleFileUpload = (e) => {
-    const files = Array.from(e.target.files);
-    setFormData(prevData => ({
-      ...prevData,
-      files: files
-    }));
-  };
-
+  
   const handleSubmit = (e) => {
     e.preventDefault();
   handleNewCategory()// You can send this data to your backend or perform any other action
   };
 
+ 
   return (
     <React.Fragment>
       <Navbar/>
@@ -284,12 +333,23 @@ const handleNewCategory=async()=>{
   message={successMessage?successMessage:"Please Try Again with corrte data"}
 />
  <div className="form_container">
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} onDrop={handleFileDrop} encType="multipart/form-data">
+        <h1 style={{ padding:"20px",textAlign:"center"}}>ECGM Complaint Form</h1>
         <label>Date and Time of Observation:</label>
         <div className="datetime-inputs">
           <input type="date" name="date" value={formData.date} onChange={handleInputChange} />
           <input type="time" name="time" value={formData.time} onChange={handleInputChange} />
         </div>
+        <label>Select Organization:</label>
+        <select name="organizationName" value={formData.organizationName} onChange={handleInputChange}>
+        <option value="">Select Organization / Individual</option>
+        {organizationData?.map((dataItem) => {
+          return(
+          <option value={dataItem.name}>{dataItem.name}</option>
+          )})  
+          }
+          </select>
+          
 
         <label>Location of Observation:</label>
         <input type="text" required  name="location.address" placeholder="Address or Description" value={formData.location.address} onChange={handleInputChange} />
@@ -325,24 +385,28 @@ const handleNewCategory=async()=>{
         </div>
       ))}
 
-          {/* {questionData.map(question => (
-        <div key={question.id}>
-          <label>{question.name}</label>
-          <select name="severity" required   onChange={handleInputChange}>
-            <option value="">Select...</option>
-            {question.answers.map(answer => (
-              <option key={answer} value={answer}>{answer}</option>
-            ))}
-          </select>
-        </div>
-      ))} */}
 
         <label>Additional Information:</label>
         <textarea  name="additionalDetails" placeholder="Any Additional Details or Comments" value={formData.additionalDetails} onChange={handleInputChange} />
-
         <label>Upload Supporting Documents or Images:</label>
-        <input type="file" multiple onChange={handleFileUpload} />
+        <div
+          className="drop-zone"
+          onDragOver={(event) => event.preventDefault()}
+          onDrop={handleFileDrop}
+        >
+          <p>Drag &amp; Drop Images Here</p>
+        </div>
+        <input type="file" multiple onChange={handleFileUploadImage} />
 
+        {images.length > 0 && (
+          <div>
+            <p>Selected Images:</p>
+            {images.map((image, index) => (
+              <div key={index}>{image.name}</div>
+            ))}
+          </div>
+        )}
+      
         <label>Contact Information (Optional):</label>
         <input type="text" name="contact.name" placeholder="Name" value={formData.contact.name} onChange={handleInputChange} />
         <input type="email" name="contact.email" required placeholder="Email Address" value={formData.contact.email} onChange={handleInputChange} />

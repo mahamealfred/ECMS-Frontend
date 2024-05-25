@@ -65,6 +65,8 @@ function UserActivity(complaintData) {
  
   const chartData = mapComplaintsToChartData(complaintData.complaintData);
 
+  console.log("data::",complaintData.complaintData)
+
   return (
     <div className="user__activity">
       <div className="user__activity__info">

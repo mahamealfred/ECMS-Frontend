@@ -8,7 +8,7 @@ import MusicMetric from "./MusicMetric";
 import UserActivity from "./UserActivity";
 import { fetchAllComplaints } from "../apis/complaintController";
 import { useAuth } from "../context/AuthContext";
-
+import MyBarChart from "./charts/BarChart";
 function Metrics() {
   const [complaintData, setComplaintData] = useState([]);
   const {userInfo}=useAuth()
@@ -38,10 +38,13 @@ function Metrics() {
         <DailyMetric />
         <MusicMetric />
       </div>
+     
       <div className="grid-two">
+      <MyBarChart complaintData={complaintData}/>
+      {/* <UserActivity complaintData={complaintData}/> */}
         <TrendingTracks complaintData={complaintData}/>
         <TrendingUsers />
-        <UserActivity complaintData={complaintData}/>
+    
       </div>
     </div>
   );

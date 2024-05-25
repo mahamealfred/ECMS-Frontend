@@ -241,21 +241,12 @@ const CategoryTable = () => {
             <tbody>
               {categoryData?.map((dataItem) => {
                 return (
+                  dataItem.role==="User"?null:
                   <tr key={dataItem.id}>
                     <td>{dataItem.firstName}</td>
                     <td>{dataItem.lastName}</td>
                     <td>{dataItem?.email}</td>
                     <td>{dataItem.role}</td>
-                    {/* <td>{dataItem.customer}</td> */}
-                    {/* <td>
-                      <div className="dt-status">
-                        <span
-                          className={`dt-status-dot dot-${dataItem.status}`}
-                        ></span>
-                        <span className="dt-status-text">{dataItem.status}</span>
-                      </div>
-                    </td> */}
-                    {/* <td>${dataItem.amount.toFixed(2)}</td> */}
                     <td className="dt-cell-action">
                       <AreaTableAction  
                       id={dataItem.id} 
