@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { AreaChart, Area, Tooltip, ResponsiveContainer } from "recharts";
-import { fetchAllComplaints } from "../apis/complaintController";
+import { fetchAllComplaints, fetchAllComplaintsById } from "../apis/complaintController";
+import { useAuth } from "../context/AuthContext";
 
 const data = [
   {
@@ -117,7 +118,7 @@ function DailyMetric() {
 
 
   //Fecth Category
-  const fetchCategory = async () => {
+  const fetchComplaint= async () => {
     try {
       const response = await fetchAllComplaints();
       if (response.responseCode === 200) {
@@ -128,10 +129,28 @@ function DailyMetric() {
       return error
     }
   }
+  const {userInfo}=useAuth()
+  const fetchComplaintByStaff = async () => {
+    try {
+      const response = await fetchAllComplaintsById(JSON.parse(userInfo)?.id);
+      if (response.responseCode === 200) {
+        setComplaintData(response.data)
+      }
+  
+    } catch (error) {
+      return error
+    }
+  }
   useEffect(async () => {
     if (complaintData.length < 1) {
-      await fetchCategory()
-        }
+      if (JSON.parse(userInfo)?.role === "Admin") {
+        await fetchComplaint()
+      } else {
+        await fetchComplaintByStaff()
+      }
+  
+  
+    }
   }, []);
   return (
     <div className="top__card">

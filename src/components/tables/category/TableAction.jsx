@@ -61,9 +61,9 @@ const handleDelete=async()=>{
           <div className="action-dropdown-menu" ref={dropdownRef}>
             <ul className="dropdown-menu-list">
               <li className="dropdown-menu-item">
-                <button  className="dropdown-menu-link">
+                {/* <button  className="dropdown-menu-link">
                   View
-                </button>
+                </button> */}
               </li>
               <li className="dropdown-menu-item">
                 <button  className="dropdown-menu-link">

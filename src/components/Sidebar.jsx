@@ -7,7 +7,7 @@ import Logo from "../assets/logo.png";
 import Player from "./Player";
 import Button from "./Home/Button";
 import { useAuth } from "../context/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Sidebar() {
   const {logout,userInfo}=useAuth()
@@ -31,43 +31,61 @@ function Sidebar() {
                 <>
                  <li className="active">
               <IoStatsChartSharp />
-              <a href="/dashboard">Overview</a>
+            
+              <Link to="/dashboard">Overview</Link>
             </li>
             <li>
               <SiDatacamp />
-              <a href="/dashboard/complaint-categories">Category</a>
+                
+              <Link to="/dashboard/complaint-categories">Category</Link>
             </li>
             <li>
             <SiDatacamp />
-              <a href="/dashboard/complaints">Complaints</a>
+           
+              <Link to="/dashboard/complaints">Complaints</Link>
             </li>
             <li>
             <SiDatacamp />
-              <a href="/dashboard/pending-complaints">Pending Complaints</a>
+              
+              <Link to="/dashboard/pending-complaints">Pending Complaints</Link>
             </li>
             <li>
             <SiDatacamp />
-              <a href="/dashboard/delivered-complaints">Delivered Complaints</a>
+              
+              <Link to="/dashboard/delivered-complaints">Delivered Complaints</Link>
             </li>
             <li>
             <SiDatacamp />
-              <a href="/dashboard/solved-complaints">Resolved Complaints</a>
+              <Link to="/dashboard/solved-complaints">Resolved Complaints</Link>
             </li>
             <li>
               <FiUsers />
-              <a href="/dashboard/users">Users</a>
+          
+              <Link to="/dashboard/users">Users</Link>
             </li>
                 </>
-              ):JSON.parse(userInfo)?.role ==="Supervisor"?(
+              ):JSON.parse(userInfo)?.role ==="Staff"?(
                 <>
                   <li className="active">
               <IoStatsChartSharp />
-              <a href="/dashboard">Overview</a>
+             
+              <Link to="/dashboard">Overview</Link>
             </li>
       
             <li>
             <SiDatacamp />
-              <a href="/dashboard/delivered-complaints">Delivered Complaints</a>
+              {/* <a href="/dashboard/new-delivered-complaints">New Complaints</a> */}
+              <Link to="/dashboard/new-delivered-complaints">New Complaints</Link>
+            </li>
+            <li>
+            <SiDatacamp />
+            
+              <Link to="/dashboard/staff-canceled-complaints">Canceled Complaints</Link>
+            </li>
+            <li>
+            <SiDatacamp />
+         
+              <Link to="/dashboard/staff-solved-complaints">Resolved Complaints</Link>
             </li>
                 </>
               ):JSON.parse(userInfo)?.role ==="Analyst"?(

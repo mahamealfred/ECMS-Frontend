@@ -1,5 +1,5 @@
 import  React, { useEffect, useState } from "react";
-import AreaTableAction from "./TableAction";
+import AreaTableAction from "./StaffTableAction";
 import "../Table.scss";
 import Navbar from "../../Navbar";
 import { addNewCategory, fetchAllCategories } from "../../../apis/categoriesController";
@@ -42,6 +42,8 @@ const ComplaintTable = () => {
   const [successMessage,setSuccessMessage]=useState("")
   const [vertical,setVertical]=useState("top")
   const [horizontal,setHorizontal]=useState("right")
+  const {userInfo}=useAuth()
+
   const handleCloseSnack=()=>{
     setSuccessMessage("")
     setOpenSuccess(false)
@@ -86,12 +88,13 @@ if(!name){
 
   }
 
-  //Fecth camplaint
+  //Fecth Category
   const fetchCategory = async () => {
     try {
-      
-      const response = await fetchAllComplaints();
+      const response = await fetchAllComplaintsById(JSON.parse(userInfo)?.id);
+    
       if (response.responseCode === 200) {
+        console.log("response gg:",response.data)
         setComplaintData(response.data)
       }
        
@@ -99,26 +102,9 @@ if(!name){
       return error
     }
   }
-  const {userInfo}=useAuth()
-  const fetchComplaintByStaff = async () => {
-    try {
-      const response = await fetchAllComplaintsById(JSON.parse(userInfo)?.id);
-      if (response.responseCode === 200) {
-        setComplaintData(response.data)
-      }
-
-    } catch (error) {
-      return error
-    }
-  }
   useEffect(async () => {
     if (complaintData.length < 1) {
-      if(JSON.parse(userInfo)?.role==="Admin"){
-        await fetchCategory()
-      }else{
-await fetchComplaintByStaff()
-      }
-   
+      await fetchCategory()
         }
   }, []);
 
@@ -181,7 +167,7 @@ await fetchComplaintByStaff()
       <section className="content-area-table">
         
       <div className="data-table-info">
-        <h4 className="data-table-title">List of Pending Complaints</h4>
+        <h4 className="data-table-title">List of New Complaints</h4>
         <div className="export-buttons">
             <button onClick={handleExportPDF}>Export as PDF</button>
             <button onClick={handleExportExcel}>Export as Excel</button>
@@ -201,7 +187,7 @@ await fetchComplaintByStaff()
           <tbody>
           {complaintData &&
     complaintData
-      .filter((dataItem) => dataItem.status.toLowerCase() === 'pending')
+      .filter((dataItem) => dataItem.status.toLowerCase() === 'delivered')
       .map((dataItem) => {
               
               return (

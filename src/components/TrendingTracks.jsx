@@ -1,9 +1,9 @@
 import React from "react";
 import { BsArrowRight } from "react-icons/bs";
 import { fetchAllComplaints } from "../apis/complaintController"; // Import the CSS file
-import "./TrendingTracks.css"
 
-function TrendingTracks({ complaintData }) {
+
+function TrendingTracks(complaintData ) {
   const groupComplaintsByCategoryAndStatus = () => {
     const groupedComplaints = {};
 
@@ -29,31 +29,31 @@ function TrendingTracks({ complaintData }) {
 
   return (
     <div className="trending__tracks">
-      <div className="trending__info">
-        <div>
-          <h3>Complaints Status</h3>
-          <span></span>
-        </div>
-        <div className="icon">
-          <BsArrowRight />
+    <div className="trending__info">
+      <div>
+        <h3>Complaints Status</h3>
+        <span></span>
+      </div>
+      <div className="icon">
+        <BsArrowRight />
+      </div>
+    </div>
+    {Object.keys(groupedComplaints).map((categoryName) => (
+      <div key={categoryName} className="trend">
+        <h4>{categoryName}</h4>
+        <div className="status__counts">
+          {Object.entries(groupedComplaints[categoryName])?.map(
+            ([status, count]) => (
+              <div className="status" key={status}>
+                <span>{status}:</span>
+                <span>{count}</span>
+              </div>
+            )
+          )}
         </div>
       </div>
-      {Object.keys(groupedComplaints).map((categoryName) => (
-        <div key={categoryName} className="trend">
-          <h4>{categoryName}</h4>
-          <div className="status__counts">
-            {Object.entries(groupedComplaints[categoryName])?.map(
-              ([status, count]) => (
-                <div className="status" key={status}>
-                  <span>{status}:</span>
-                  <span>{count}</span>
-                </div>
-              )
-            )}
-          </div>
-        </div>
-      ))}
-    </div>
+    ))}
+  </div>
   );
 }
 

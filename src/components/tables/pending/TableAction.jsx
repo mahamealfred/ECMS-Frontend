@@ -189,12 +189,12 @@ const TableAction = ({
 
       >
         <Paper style={{ padding: '40px', marginBottom: '20px' }}>
-          <Typography variant="h6">Supervisor</Typography>
+          <Typography variant="h6">Staff Members</Typography>
           <DialogContent>
             <TextField
               fullWidth
               select
-              label="Select Supervisor"
+              label="Select Staff"
               name="role"
               value={formData.role}
               onChange={handleInputChange}
@@ -203,7 +203,7 @@ const TableAction = ({
               sx={{ marginBottom: '16px', width: '100%' }} // Set width to 100%
             >
               {roles.map((option) => (
-                option.role === "Supervisor" ?
+                option.role === "Staff" ?
                   <MenuItem key={option.id} value={option.id}>
                     {option.firstName} {option.lastName}
                   </MenuItem>
@@ -280,13 +280,13 @@ const TableAction = ({
                 </button>
               </li>
               <li className="dropdown-menu-item">
-                <button className="dropdown-menu-link">
+                {/* <button className="dropdown-menu-link">
                   Notification
-                </button>
+                </button> */}
               </li>
               <li className="dropdown-menu-item">
                 <button onClick={(e) => handleOpenInitiation(e)} className="dropdown-menu-link">
-                  Initiation
+                  Asign
                 </button>
               </li>
             </ul>

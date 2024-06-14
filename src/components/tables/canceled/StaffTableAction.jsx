@@ -9,7 +9,7 @@ import MenuItem from '@mui/material/MenuItem';
 import { fetchAllUsers } from '../../../apis/userController';
 import { addNewAction } from '../../../apis/actionController';
 import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
-import { fetchAllComplaints } from '../../../apis/complaintController';
+import { approveComplaint, cancelComplaint, fetchAllComplaints } from '../../../apis/complaintController';
 const TableAction = ({
   id,
   // setOpenView,openView, 
@@ -42,7 +42,9 @@ const TableAction = ({
     setSuccessMessage("")
     setOpenSuccess(false)
   }
-
+const refreshPage=() =>{
+  window.location.reload();
+}
   const handleDropdown = () => {
     setShowDropdown(!showDropdown);
 
@@ -146,7 +148,6 @@ const TableAction = ({
 
     // Submit the form
     try {
-
       const response = await addNewAction(id, role)
       if (response.responseCode === 201) {
         //  setOpen(false)
@@ -170,6 +171,38 @@ const TableAction = ({
     }
   };
 
+  const handleCancel=async()=>{
+   
+    try {
+      const response = await cancelComplaint(id);
+      if (response.responseCode === 200) {
+        setSuccessMessage(response.responseDescription)
+      fetchComplaints()
+        setOpenSuccess(true)
+        setComplaints([])
+      
+      }
+    
+    } catch (error) {
+      return  setSuccessMessage(error)
+    }
+
+  }
+
+  const handleApprove=async()=>{
+    try {
+      const response = await approveComplaint(id);
+      if (response.responseCode === 200) {
+        setSuccessMessage(response.responseDescription)
+        fetchComplaints()
+        setOpenSuccess(true)
+       
+      }
+    
+    } catch (error) {
+      return  setSuccessMessage(error)
+    }
+  }
   return (
     <>
 
@@ -280,13 +313,13 @@ const TableAction = ({
                 </button>
               </li>
               <li className="dropdown-menu-item">
-                {/* <button className="dropdown-menu-link">
-                  Notification
-                </button> */}
+                <button onClick={(e) => handleApprove(e)} className="dropdown-menu-link">
+                  Approve
+                </button>
               </li>
               <li className="dropdown-menu-item">
-                <button className="dropdown-menu-link">
-                  Delete
+                <button onClick={(e) => handleCancel(e)} className="dropdown-menu-link">
+                  Cancel
                 </button>
               </li>
             </ul>

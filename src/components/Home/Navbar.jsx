@@ -4,7 +4,7 @@ import { GiHamburgerMenu } from "react-icons/gi";
 import { MdClose } from "react-icons/md";
 import logo from "../../assets/logo.png";
 import Button from "./Button";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const [isNavOpen, setIsNavOpen] = useState(false);
@@ -29,13 +29,14 @@ export default function Navbar() {
       <div className={`links ${isNavOpen ? "show" : ""}`}>
         <ul>
           <li>
-            <a href="/">Home</a>
+            <Link to="/">Home</Link>
           </li>
           <li>
-            <a href="#">About</a>
+       
+            <Link to="/">About</Link>
           </li>
           <li>
-            <a href="#">Contact</a>
+            <Link to="/">Contact</Link>
           </li>
           {/* <li>
             <a href="create">Create</a>

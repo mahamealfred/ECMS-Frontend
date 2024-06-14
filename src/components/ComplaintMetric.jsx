@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from "react";
 import { RadialBarChart, RadialBar, ResponsiveContainer, Legend } from "recharts";
 import { BsThreeDots } from "react-icons/bs";
-import { fetchAllComplaints } from "../apis/complaintController";
+import { fetchAllComplaints, fetchAllComplaintsById } from "../apis/complaintController";
+import { useAuth } from "../context/AuthContext";
 
 const data = [
   {
@@ -92,7 +93,7 @@ function MusicMetric() {
     dateRange = `${formattedStartDate} - ${formattedEndDate}`;
   }
  //Fecth Category
- const fetchCategory = async () => {
+ const fetchComplaint= async () => {
   try {
     const response = await fetchAllComplaints();
     if (response.responseCode === 200) {
@@ -103,10 +104,28 @@ function MusicMetric() {
     return error
   }
 }
+const {userInfo}=useAuth()
+const fetchComplaintByStaff = async () => {
+  try {
+    const response = await fetchAllComplaintsById(JSON.parse(userInfo)?.id);
+    if (response.responseCode === 200) {
+      setComplaintData(response.data)
+    }
+
+  } catch (error) {
+    return error
+  }
+}
 useEffect(async () => {
   if (complaintData.length < 1) {
-    await fetchCategory()
-      }
+    if (JSON.parse(userInfo)?.role === "Admin") {
+      await fetchComplaint()
+    } else {
+      await fetchComplaintByStaff()
+    }
+
+
+  }
 }, []);
   return (
     <div className="music__metric">
@@ -123,8 +142,8 @@ useEffect(async () => {
       <RadialBarChart
           cx="50%"
           cy="50%"
-          innerRadius="10%"
-          outerRadius="70%"
+          innerRadius="40%"
+          outerRadius="100%"
           data={environmentalData}
           startAngle={180}
           endAngle={0}

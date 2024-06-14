@@ -16,7 +16,7 @@ import { addNewUser, fetchAllUsers } from "../../apis/userController";
 import Navbar from "../../components/Navbar";
 import Container from '@mui/material/Container';
 
-const roles = ['Analyst', 'Admin','Supervisor'];
+const roles = [ 'Admin','Staff'];
 
 const TABLE_HEADS = [
   "Fist Name",

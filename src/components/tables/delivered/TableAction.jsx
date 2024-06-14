@@ -312,7 +312,7 @@ const refreshPage=() =>{
                   View
                 </button>
               </li>
-              <li className="dropdown-menu-item">
+              {/* <li className="dropdown-menu-item">
                 <button onClick={(e) => handleApprove(e)} className="dropdown-menu-link">
                   Approve
                 </button>
@@ -321,7 +321,7 @@ const refreshPage=() =>{
                 <button onClick={(e) => handleCancel(e)} className="dropdown-menu-link">
                   Cancel
                 </button>
-              </li>
+              </li> */}
             </ul>
           </div>
         )}

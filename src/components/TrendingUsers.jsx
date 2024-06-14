@@ -10,7 +10,7 @@ function TrendingUsers() {
     <div className="trending__users">
       <div className="trending__info">
         <div>
-          <h3> Users</h3>
+          <h3>Recent Complaints</h3>
           {/* <span>Today</span> */}
         </div>
         <div className="icon">
@@ -20,22 +20,22 @@ function TrendingUsers() {
       <div className="trend">
         {/* <img src={trend1} alt="" /> */}
         <div className="trend__info">
-          <h4>Taylor Swift</h4>
-          <span>2M Followers</span>
+          <h4></h4>
+          <span></span>
         </div>
       </div>
       <div className="trend">
-        <img src={trend2} alt="" />
+        {/* <img src={trend2} alt="" /> */}
         <div className="trend__info">
-          <h4>Justin Beiber</h4>
-          <span>38.7K Followers</span>
+          <h4></h4>
+          <span>Air polution</span>
         </div>
       </div>
       <div className="trend">
-        <img src={trend3} alt="" />
+        {/* <img src={trend3} alt="" /> */}
         <div className="trend__info">
-          <h4>Rose</h4>
-          <span>99.1K Followers</span>
+          <h4></h4>
+          <span>Water Disposal</span>
         </div>
       </div>
     </div>

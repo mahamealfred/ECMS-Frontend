@@ -15,6 +15,9 @@ import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-d
 import { useEffect, useState } from "react";
 import { AuthProvider, useAuth } from "./context/AuthContext";
 import SolvedComplaintList from "./components/SolvedComplaintList";
+import StaffDeliveredComplaint from "./components/StaffDeliveredComplaint";
+import StaffCanceledComplaint from "./components/StaffCanceledComplaint";
+import StaffSolvedComplaint from "./components/StaffSolvedComplaint";
 
 function App() {
   
@@ -45,6 +48,9 @@ function App() {
           <Route path="/dashboard/pending-complaints" element={<PendingComplaintList/>}/>
           <Route path="/dashboard/delivered-complaints" element={<DeliveredComplaintList/>}/>
           <Route path="/dashboard/solved-complaints" element={<SolvedComplaintList/>}/>
+          <Route path="/dashboard/new-delivered-complaints" element={<StaffDeliveredComplaint/>}/>
+          <Route path="/dashboard/staff-canceled-complaints" element={<StaffCanceledComplaint/>}/>
+          <Route path="/dashboard/staff-solved-complaints" element={<StaffSolvedComplaint/>}/>
           <Route path="/login" element={<LoginPage />} />
          {/* )}  */}
         <Route path="/" element={<Home />} />
