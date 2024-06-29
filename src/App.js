@@ -8,6 +8,8 @@ import UserList from "./components/UserList";
 import CategoryList from "./components/CategoryList";
 import ComplaintForm from "./components/ComplaintForm";
 import ComplaintList from "./components/ComplaintList";
+import QuestionList from "./components/QuestionList";
+import OrganizationList from "./components/OrganizationList";
 import PendingComplaintList from "./components/PendingComplaintList";
 import DeliveredComplaintList from "./components/DeliveredComplaintList";
 import LoginPage from "./components/LoginPage";
@@ -51,6 +53,8 @@ function App() {
           <Route path="/dashboard/new-delivered-complaints" element={<StaffDeliveredComplaint/>}/>
           <Route path="/dashboard/staff-canceled-complaints" element={<StaffCanceledComplaint/>}/>
           <Route path="/dashboard/staff-solved-complaints" element={<StaffSolvedComplaint/>}/>
+          <Route path="/dashboard/organizations" element={<OrganizationList/>}/>
+          <Route path="/dashboard/questions" element={<QuestionList/>}/>
           <Route path="/login" element={<LoginPage />} />
          {/* )}  */}
         <Route path="/" element={<Home />} />

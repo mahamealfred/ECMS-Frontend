@@ -36,8 +36,15 @@ function Sidebar() {
             </li>
             <li>
               <SiDatacamp />
-                
               <Link to="/dashboard/complaint-categories">Category</Link>
+            </li>
+            <li>
+              <SiDatacamp />
+              <Link to="/dashboard/organizations">Organization</Link>
+            </li>
+            <li>
+              <SiDatacamp />
+              <Link to="/dashboard/questions">Questions</Link>
             </li>
             <li>
             <SiDatacamp />

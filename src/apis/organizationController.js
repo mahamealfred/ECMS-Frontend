@@ -48,7 +48,8 @@ const base_url_add_new_user ="http://localhost:8000/api/v1/organization";
   };
 
  //add user
- const addNewUser = async (requestBody) => {
+ const addNewOrganization = async (name,email) => {
+  console.log("data to apis",name,email)
   const serverResponse = {
     responseCode: "",
     responseDescription: "",
@@ -56,9 +57,10 @@ const base_url_add_new_user ="http://localhost:8000/api/v1/organization";
     responseDate: "",
     data: "",
   };
-  // let data = JSON.stringify({
-  //     "categoryName": name
-  //   });
+   let data = JSON.stringify({
+      "name": name,
+      "email":email
+     });
     
     let config = {
       method: 'post',
@@ -67,7 +69,7 @@ const base_url_add_new_user ="http://localhost:8000/api/v1/organization";
       headers: { 
         'Content-Type': 'application/json'
       },
-      data : requestBody
+      data : data
   }
   await axios
     .request(config)
@@ -104,5 +106,5 @@ const base_url_add_new_user ="http://localhost:8000/api/v1/organization";
   
   export {
     fetchOrganizations,
-    addNewUser
+    addNewOrganization
   }
